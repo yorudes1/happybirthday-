@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A Little Surprise ✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f1ea;
+    --bg-2:#efe7db;
+    --ink:#2a2421;
+    --ink-soft:#6b605a;
+    --muted:#a89e95;
+    --line:rgba(42,36,33,.12);
+    --accent:#c44a6a;
+    --accent-soft:#e7a6b6;
+    --cake:#f4c2cf;
+    --cake-shade:#d99fb0;
+    --icing:#ffffff;
+    --icing-shade:#f1e9e2;
+    --plate:#ede3d5;
+    --candle:#ffffff;
+    --candle-stripe:#c44a6a;
+    --flame:#ffb347;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #fff8ef 0%, transparent 60%),
+      radial-gradient(900px 500px at 90% 110%, #f4e3d3 0%, transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    font-weight:300;
+    letter-spacing:.01em;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* ---------- Surprise gate ---------- */
+  .gate{
+    position:fixed;inset:0;z-index:50;
+    display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(800px 500px at 50% 40%, #fff8ef 0%, var(--bg) 60%);
+    transition:opacity .9s ease, visibility .9s ease;
+  }
+  .gate.hidden{opacity:0;visibility:hidden}
+  .gate-inner{text-align:center;padding:0 24px;max-width:520px}
+  .eyebrow{
+    font-family:'Inter',sans-serif;
+    font-size:.72rem;font-weight:500;letter-spacing:.4em;
+    text-transform:uppercase;color:var(--muted);
+    margin-bottom:18px;
+  }
+  .gate h2{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:400;font-style:italic;
+    font-size:clamp(2.2rem,5vw,3.4rem);
+    line-height:1.1;margin:0 0 14px;color:var(--ink);
+  }
+  .gate p{
+    color:var(--ink-soft);font-size:.95rem;line-height:1.7;margin:0 0 28px;
+  }
+  .btn{
+    appearance:none;border:1px solid var(--ink);
+    background:var(--ink);color:var(--bg);
+    font-family:'Inter',sans-serif;font-weight:500;font-size:.78rem;
+    letter-spacing:.25em;text-transform:uppercase;
+    padding:14px 28px;border-radius:999px;cursor:pointer;
+    transition:transform .25s ease, background .25s ease, color .25s ease;
+  }
+  .btn:hover{transform:translateY(-1px);background:transparent;color:var(--ink)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:var(--bg)}
+
+  /* ---------- Stage ---------- */
+  .stage{
+    min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;
+    padding:64px 24px 96px;
+    opacity:0;transform:translateY(8px);
+    transition:opacity 1s ease .2s, transform 1s ease .2s;
+  }
+  .stage.show{opacity:1;transform:none}
+
+  header.hero{text-align:center;max-width:640px}
+  header .eyebrow{margin-bottom:10px}
+  header h1{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:400;font-style:italic;
+    font-size:clamp(3rem,8vw,5.5rem);
+    line-height:1;letter-spacing:-.01em;
+    margin:0 0 18px;color:var(--ink);
+  }
+  header h1 .amp{color:var(--accent)}
+  header .wish{
+    color:var(--ink-soft);font-size:.98rem;line-height:1.8;
+    max-width:520px;margin:0 auto;
+  }
+
+  .divider{
+    width:1px;height:48px;background:var(--line);margin:36px 0 12px;
+  }
+
+  /* ---------- Scene ---------- */
+  .scene{
+    perspective:1400px;
+    width:100%;max-width:520px;
+    display:flex;justify-content:center;
+    margin:18px 0 8px;
+    user-select:none;
+  }
+  .cake-stage{
+    position:relative;width:340px;height:300px;
+    transform-style:preserve-3d;
+    transform:rotateX(18deg) rotateY(-12deg);
+    transition:transform 1.2s cubic-bezier(.2,.8,.2,1);
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{transform:rotateX(18deg) rotateY(-12deg) translateY(0)}
+    50%{transform:rotateX(18deg) rotateY(-12deg) translateY(-8px)}
+  }
+  .cake-stage:hover{transform:rotateX(15deg) rotateY(8deg)}
+
+  /* Plate */
+  .plate{
+    position:absolute;left:50%;bottom:20px;
+    width:320px;height:36px;transform:translateX(-50%);
+    background:radial-gradient(ellipse at 50% 40%, #fff 0%, var(--plate) 60%, #d9cdbd 100%);
+    border-radius:50%;
+    box-shadow:0 30px 50px -20px rgba(60,40,30,.25), 0 6px 12px rgba(60,40,30,.08);
+  }
+  .plate::after{
+    content:"";position:absolute;left:50%;top:50%;
+    width:90%;height:60%;transform:translate(-50%,-50%);
+    border-radius:50%;border:1px solid rgba(42,36,33,.06);
+  }
+
+  /* Tier helper */
+  .tier{position:absolute;left:50%;transform:translateX(-50%);transform-style:preserve-3d}
+  .tier .body{
+    position:relative;border-radius:50%/22px;
+    background:linear-gradient(180deg,var(--cake) 0%, var(--cake-shade) 100%);
+    box-shadow:
+      inset 0 -16px 24px rgba(0,0,0,.12),
+      inset 0 8px 14px rgba(255,255,255,.35),
+      0 18px 30px -12px rgba(80,40,55,.25);
+    transition:background .5s ease, box-shadow .5s ease;
+  }
+  .tier .icing{
+    position:absolute;left:0;right:0;top:-14px;height:28px;
+    background:radial-gradient(ellipse at 50% 40%, #fff 0%, var(--icing) 55%, var(--icing-shade) 100%);
+    border-radius:50%;
+    box-shadow:0 4px 8px rgba(0,0,0,.06), inset 0 -4px 8px rgba(0,0,0,.05);
+    transition:background .5s ease;
+  }
+  .tier .drip{
+    position:absolute;left:0;right:0;top:6px;height:22px;
+    background:var(--icing);
+    -webkit-mask:radial-gradient(10px 16px at 10px 0, #000 98%, transparent 100%) repeat-x;
+            mask:radial-gradient(10px 16px at 10px 0, #000 98%, transparent 100%) repeat-x;
+    -webkit-mask-size:20px 22px;mask-size:20px 22px;
+    transition:background .5s ease;
+    opacity:.95;
+  }
+
+  /* Bottom tier */
+  .tier.bottom{bottom:34px;width:260px}
+  .tier.bottom .body{height:90px}
+  /* Middle tier */
+  .tier.middle{bottom:118px;width:200px}
+  .tier.middle .body{height:72px}
+  /* Top tier */
+  .tier.top{bottom:184px;width:140px}
+  .tier.top .body{height:56px}
+
+  /* Toppings */
+  .toppings{position:absolute;inset:0;pointer-events:none}
+  .candle-layer{pointer-events:auto}
+  .topping{
+    position:absolute;transform:translate(-50%,-50%);
+    filter:drop-shadow(0 4px 4px rgba(0,0,0,.18));
+  }
+  .topping.cherry{
+    width:14px;height:14px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #ff7a8e 0%, #c4203b 70%, #6e0a1e 100%);
+  }
+  .topping.cherry::after{
+    content:"";position:absolute;top:-6px;left:50%;width:1px;height:6px;
+    background:#4a7a2a;transform:translateX(-50%) rotate(-12deg);
+  }
+  .topping.star{
+    width:0;height:0;color:#f4c95d;font-size:18px;line-height:1;
+  }
+  .topping.star::before{content:"★"}
+  .topping.pearl{
+    width:8px;height:8px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, #fff, #e8d9c4 70%, #b9a48a);
+  }
+  .topping.heart{color:var(--accent);font-size:16px;line-height:1}
+  .topping.heart::before{content:"♥"}
+
+  /* Candles */
+  .candle{
+    position:absolute;transform:translate(-50%,-100%);
+    width:9px;height:46px;cursor:pointer;
+    transition:transform .2s ease;
+  }
+  .candle:hover{transform:translate(-50%,-100%) scale(1.08)}
+  .candle .stick{
+    width:100%;height:100%;border-radius:3px 3px 1px 1px;
+    background:
+      repeating-linear-gradient(45deg,
+        var(--candle) 0 4px,
+        var(--candle-stripe) 4px 8px);
+    box-shadow:0 2px 4px rgba(0,0,0,.18), inset -2px 0 0 rgba(0,0,0,.08);
+  }
+  .candle .wick{
+    position:absolute;left:50%;top:-4px;width:1.5px;height:5px;
+    background:#3a2a22;transform:translateX(-50%);
+  }
+  .flame{
+    position:absolute;left:50%;top:-18px;transform:translateX(-50%);
+    width:12px;height:18px;
+    background:radial-gradient(circle at 50% 70%, #fff 0%, #ffe89a 30%, var(--flame) 70%, #d96207 100%);
+    border-radius:50% 50% 40% 40% / 60% 60% 40% 40%;
+    box-shadow:0 0 10px rgba(255,179,71,.7), 0 0 24px rgba(255,179,71,.45);
+    animation:flicker .18s ease-in-out infinite alternate;
+    transform-origin:50% 100%;
+  }
+  @keyframes flicker{
+    from{transform:translateX(-50%) scale(1) rotate(-2deg)}
+    to{transform:translateX(-50%) scale(1.08,1.12) rotate(2deg)}
+  }
+  .candle.out .flame{opacity:0;transform:translateX(-50%) scale(.4);transition:all .4s ease}
+  .candle.out .wick{background:#1a1310}
+
+  /* ---------- Controls ---------- */
+  .panel{
+    margin-top:36px;width:100%;max-width:640px;
+    background:rgba(255,255,255,.6);
+    border:1px solid var(--line);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-radius:18px;
+    padding:22px 24px;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+    opacity:0;transform:translateY(8px);pointer-events:none;
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .panel.show{opacity:1;transform:none;pointer-events:auto}
+  .field{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .field label{
+    font-size:.62rem;font-weight:500;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .field select{
+    appearance:none;-webkit-appearance:none;
+    border:1px solid var(--line);background:#fff;
+    color:var(--ink);font-family:inherit;font-size:.85rem;
+    padding:9px 28px 9px 12px;border-radius:10px;cursor:pointer;
+    background-image:linear-gradient(45deg,transparent 50%,var(--ink-soft) 50%),linear-gradient(135deg,var(--ink-soft) 50%,transparent 50%);
+    background-position:calc(100% - 14px) 14px,calc(100% - 9px) 14px;
+    background-size:5px 5px;background-repeat:no-repeat;
+    transition:border-color .2s ease;
+  }
+  .field select:hover,.field select:focus{outline:none;border-color:var(--ink)}
+  @media (max-width:640px){
+    .panel{grid-template-columns:repeat(2,1fr)}
+    .cake-stage{transform:rotateX(18deg) rotateY(-12deg) scale(.85);animation:none}
+  }
+
+  /* Music + hint row */
+  .actions{
+    margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:14px;
+  }
+  .hint{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    color:var(--ink-soft);font-size:1.05rem;letter-spacing:.01em;
+  }
+  .hint .dot{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--accent);vertical-align:middle;margin:0 8px 2px}
+
+  /* Final greeting */
+  .finale{
+    margin-top:48px;text-align:center;max-width:560px;
+    opacity:0;transform:translateY(12px);
+    transition:opacity 1s ease, transform 1s ease;
+  }
+  .finale.show{opacity:1;transform:none}
+  .finale h3{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
+    font-size:clamp(2rem,5vw,3rem);margin:0 0 10px;color:var(--accent);
+  }
+  .finale p{color:var(--ink-soft);font-size:.95rem;line-height:1.7;margin:0}
+
+  /* Confetti canvas */
+  #fx{
+    position:fixed;inset:0;pointer-events:none;z-index:40;
+  }
+
+  /* footer signature */
+  .sig{
+    margin-top:48px;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<!-- Surprise gate -->
+<div class="gate" id="gate">
+  <div class="gate-inner">
+    <div class="eyebrow">a little something</div>
+    <h2>I made this just for you.</h2>
+    <p>Take a breath, turn up your sound, and tap below when you're ready for your surprise.</p>
+    <button class="btn" id="openBtn">Open the surprise</button>
+  </div>
+</div>
+
+<!-- Stage -->
+<main class="stage" id="stage">
+  <header class="hero">
+    <div class="eyebrow">for you · today</div>
+    <h1>Happy <em>Birthday</em></h1>
+    <p class="wish">
+      Wishing you health, happiness, and many more beautiful chapters ahead.
+      Thank you for your love and kindness — may your day be soft, sweet, and entirely yours.
+    </p>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- Cake scene -->
+  <div class="scene">
+    <div class="cake-stage" id="cakeStage">
+      <div class="plate"></div>
+
+      <div class="tier bottom">
+        <div class="body" id="bodyBottom"></div>
+        <div class="drip" id="dripBottom"></div>
+        <div class="icing" id="icingBottom"></div>
+        <div class="toppings" id="topBottom"></div>
+      </div>
+
+      <div class="tier middle">
+        <div class="body" id="bodyMiddle"></div>
+        <div class="drip" id="dripMiddle"></div>
+        <div class="icing" id="icingMiddle"></div>
+        <div class="toppings" id="topMiddle"></div>
+      </div>
+
+      <div class="tier top">
+        <div class="body" id="bodyTop"></div>
+        <div class="drip" id="dripTop"></div>
+        <div class="icing" id="icingTop"></div>
+        <div class="toppings" id="topTop"></div>
+        <div class="toppings candle-layer" id="candleLayer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="panel show" id="panel">
+    <div class="field">
+      <label>Cake</label>
+      <select id="selCake">
+        <option value="strawberry">Strawberry</option>
+        <option value="ube">Ube</option>
+        <option value="vanilla">Vanilla</option>
+        <option value="matcha">Matcha</option>
+        <option value="cocoa">Cocoa</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Icing</label>
+      <select id="selIcing">
+        <option value="cream">Cream</option>
+        <option value="pink">Blush</option>
+        <option value="lemon">Lemon</option>
+        <option value="chocolate">Chocolate</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Toppings</label>
+      <select id="selTop">
+        <option value="none">None</option>
+        <option value="cherry" selected>Cherries</option>
+        <option value="pearl">Pearls</option>
+        <option value="star">Stars</option>
+        <option value="heart">Hearts</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Candles</label>
+      <select id="selCandles">
+        <option value="1">1</option>
+        <option value="3" selected>3</option>
+        <option value="5">5</option>
+        <option value="7">7</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn ghost" id="musicBtn">▶  Play Birthday Song</button>
+    <div class="hint">make a wish <span class="dot"></span> tap each candle to blow it out</div>
+  </div>
+
+  <section class="finale" id="finale">
+    <h3>Happy Birthday, beautiful soul.</h3>
+    <p>Here's to a year as wonderful as you are. 🤍</p>
+  </section>
+
+  <div class="sig">with love</div>
+</main>
+
+<canvas id="fx"></canvas>
+
+<script>
+/* ---------------- Palettes ---------------- */
+const CAKE = {
+  strawberry: ['#f4c2cf','#d99fb0'],
+  ube:        ['#c9b6e6','#8e74c2'],
+  vanilla:    ['#f5e6c8','#d9c39a'],
+  matcha:     ['#cfe0b4','#9bbf7a'],
+  cocoa:      ['#c89a78','#7a4a32'],
+};
+const ICING = {
+  cream:     ['#ffffff','#f1e9e2'],
+  pink:      ['#ffe1ea','#f5b8c8'],
+  lemon:     ['#fff4c2','#f0dd8a'],
+  chocolate: ['#7a4a32','#4a2a1a'],
+};
+
+/* ---------------- Apply colors ---------------- */
+const root = document.documentElement;
+function applyCake(v){
+  const [a,b] = CAKE[v];
+  document.querySelectorAll('.tier .body').forEach(el=>{
+    el.style.background = `linear-gradient(180deg, ${a} 0%, ${b} 100%)`;
+  });
+}
+function applyIcing(v){
+  const [a,b] = ICING[v];
+  document.querySelectorAll('.tier .icing').forEach(el=>{
+    el.style.background = `radial-gradient(ellipse at 50% 40%, #fff 0%, ${a} 55%, ${b} 100%)`;
+  });
+  document.querySelectorAll('.tier .drip').forEach(el=>{
+    el.style.background = a;
+  });
+}
+
+/* ---------------- Toppings ---------------- */
+const TOPPING_POSITIONS = {
+  bottom:[[15,30],[50,18],[85,30],[30,70],[70,70]],
+  middle:[[20,28],[50,18],[80,28],[35,68]],
+  top:[[30,32],[70,32]],
+};
+function applyToppings(kind){
+  ['Bottom','Middle','Top'].forEach(tier=>{
+    const el = document.getElementById('top'+tier);
+    el.innerHTML = '';
+    if(kind==='none') return;
+    const pts = TOPPING_POSITIONS[tier.toLowerCase()];
+    pts.forEach(([x,y])=>{
+      const t = document.createElement('div');
+      t.className = 'topping ' + kind;
+      t.style.left = x+'%';
+      t.style.top  = y+'%';
+      el.appendChild(t);
+    });
+  });
+}
+
+/* ---------------- Candles ---------------- */
+let candles = [];
+function applyCandles(n){
+  const layer = document.getElementById('candleLayer');
+  layer.innerHTML = '';
+  candles = [];
+  n = parseInt(n,10);
+  const spread = Math.min(70, 18 + (n-1)*12);
+  const start = 50 - spread/2;
+  for(let i=0;i<n;i++){
+    const c = document.createElement('div');
+    c.className = 'candle';
+    const x = n===1 ? 50 : start + (spread*(i/(n-1)));
+    c.style.left = x+'%';
+    c.style.top  = '8%';
+    c.innerHTML = '<div class="stick"></div><div class="wick"></div><div class="flame"></div>';
+    c.addEventListener('click', e=>{
+      e.stopPropagation();
+      blowCandle(c);
+    });
+    layer.appendChild(c);
+    candles.push(c);
+  }
+}
+
+function blowCandle(c){
+  if(c.classList.contains('out')) return;
+  c.classList.add('out');
+  puff(c);
+  if(candles.every(x=>x.classList.contains('out'))){
+    setTimeout(celebrate, 450);
+  }
+}
+
+/* ---------------- Init ---------------- */
+document.getElementById('selCake').addEventListener('change', e=>applyCake(e.target.value));
+document.getElementById('selIcing').addEventListener('change', e=>applyIcing(e.target.value));
+document.getElementById('selTop').addEventListener('change', e=>applyToppings(e.target.value));
+document.getElementById('selCandles').addEventListener('change', e=>applyCandles(e.target.value));
+
+applyCake('strawberry');
+applyIcing('cream');
+applyToppings('cherry');
+applyCandles(3);
+
+/* ---------------- Surprise gate ---------------- */
+document.getElementById('openBtn').addEventListener('click', ()=>{
+  document.getElementById('gate').classList.add('hidden');
+  setTimeout(()=>document.getElementById('stage').classList.add('show'), 100);
+});
+
+/* ---------------- Music ---------------- */
+let audioCtx, songPlaying = false;
+const musicBtn = document.getElementById('musicBtn');
+musicBtn.addEventListener('click', ()=>{
+  if(songPlaying) return;
+  playBirthdaySong();
+});
+
+function playBirthdaySong(){
+  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  songPlaying = true;
+  musicBtn.textContent = '♪  Playing…';
+  // Happy Birthday melody
+  const N = (n)=>440*Math.pow(2,(n-69)/12);
+  // notes: [midi, beats]
+  const tune = [
+    [60,.75],[60,.25],[62,1],[60,1],[65,1],[64,2],
+    [60,.75],[60,.25],[62,1],[60,1],[67,1],[65,2],
+    [60,.75],[60,.25],[72,1],[69,1],[65,1],[64,1],[62,2],
+    [70,.75],[70,.25],[69,1],[65,1],[67,1],[65,2],
+  ];
+  let t = audioCtx.currentTime + 0.05;
+  const bpm = 120, beat = 60/bpm;
+  tune.forEach(([m,b])=>{
+    const dur = b*beat;
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type='triangle';
+    osc.frequency.value = N(m);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(.18, t+.02);
+    g.gain.exponentialRampToValueAtTime(.001, t+dur*.95);
+    osc.connect(g).connect(audioCtx.destination);
+    osc.start(t); osc.stop(t+dur);
+    t += dur;
+  });
+  setTimeout(()=>{ songPlaying=false; musicBtn.textContent='▶  Play Again'; }, (t-audioCtx.currentTime)*1000);
+}
+
+/* ---------------- FX: puff + confetti + fireworks ---------------- */
+const canvas = document.getElementById('fx');
+const ctx = canvas.getContext('2d');
+function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+resize(); addEventListener('resize', resize);
+
+let particles = [];
+function tick(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles = particles.filter(p=>p.life>0);
+  particles.forEach(p=>{
+    p.vx *= .99; p.vy += p.g;
+    p.x += p.vx; p.y += p.vy;
+    p.life -= 1;
+    ctx.globalAlpha = Math.max(0, p.life/p.max);
+    if(p.shape==='circle'){
+      ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+    } else {
+      ctx.fillStyle = p.color;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);
+      ctx.restore();
+      p.rot += .1;
+    }
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(tick);
+}
+tick();
+
+function puff(candleEl){
+  const r = candleEl.getBoundingClientRect();
+  const x = r.left + r.width/2, y = r.top;
+  for(let i=0;i<14;i++){
+    particles.push({
+      x,y, vx:(Math.random()-.5)*1.5, vy:-Math.random()*1.5-.3,
+      g:-.01, r:2+Math.random()*2, life:40, max:40,
+      color:'rgba(220,220,220,.7)', shape:'circle'
+    });
+  }
+}
+
+const PALETTE = ['#c44a6a','#e7a6b6','#f4c95d','#9bbf7a','#c9b6e6','#ffffff'];
+function firework(x,y){
+  const n = 60;
+  for(let i=0;i<n;i++){
+    const a = (Math.PI*2*i)/n;
+    const v = 2 + Math.random()*3;
+    particles.push({
+      x,y, vx:Math.cos(a)*v, vy:Math.sin(a)*v,
+      g:.04, r:2+Math.random()*2, life:80, max:80,
+      color:PALETTE[i%PALETTE.length], shape:'circle'
+    });
+  }
+}
+function confettiBurst(){
+  for(let i=0;i<140;i++){
+    particles.push({
+      x: Math.random()*canvas.width, y:-20,
+      vx:(Math.random()-.5)*2, vy:Math.random()*3+2,
+      g:.03, r:3+Math.random()*4, life:240, max:240,
+      color:PALETTE[i%PALETTE.length], shape:'rect', rot:Math.random()*Math.PI
+    });
+  }
+}
+
+function celebrate(){
+  document.getElementById('finale').classList.add('show');
+  confettiBurst();
+  // sequence of fireworks
+  const shots = [[.2,.3],[.8,.25],[.5,.2],[.3,.45],[.75,.4]];
+  shots.forEach(([fx,fy],i)=>{
+    setTimeout(()=>firework(canvas.width*fx, canvas.height*fy), i*350);
+  });
+  // gentle chime
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    [72,76,79,84].forEach((m,i)=>{
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type='sine'; o.frequency.value = 440*Math.pow(2,(m-69)/12);
+      const t = audioCtx.currentTime + i*.08;
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(.12,t+.02);
+      g.gain.exponentialRampToValueAtTime(.001,t+1.2);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t); o.stop(t+1.3);
+    });
+  }catch(e){}
+}
+</script>
+</body>
+</html>
