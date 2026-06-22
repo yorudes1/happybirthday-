@@ -83,13 +83,23 @@
   .stage{
     min-height:100vh;
     display:flex;flex-direction:column;align-items:center;
-    padding:64px 24px 96px;
+    padding:40px 24px 96px;
     opacity:0;transform:translateY(8px);
     transition:opacity 1s ease .2s, transform 1s ease .2s;
+    position: relative;
   }
   .stage.show{opacity:1;transform:none}
 
-  header.hero{text-align:center;max-width:640px}
+  header.hero{
+    text-align:center;max-width:640px;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .stage.editing-mode header.hero {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    position: absolute;
+  }
   header .eyebrow{margin-bottom:10px}
   header h1{
     font-family:'Cormorant Garamond',serif;
@@ -106,36 +116,48 @@
 
   .divider{
     width:1px;height:48px;background:var(--line);margin:36px 0 12px;
+    transition: opacity 0.3s;
   }
+  .stage.editing-mode .divider { opacity: 0; }
 
   /* ---------- Scene ---------- */
   .scene{
     perspective:1400px;
-    width:100%;max-width:520px;
-    display:flex;justify-content:center;
+    width:100%;max-width:700px;
+    display:flex;justify-content:center;align-items:center;
     margin:18px 0 8px;
     user-select:none;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   }
+  
+  .stage.editing-mode .scene {
+    transform: scale(1.22) translateY(40px);
+  }
+
   .cake-stage{
-    position:relative;width:340px;height:300px;
+    position:relative;width:340px;height:320px;
     transform-style:preserve-3d;
     transform:rotateX(18deg) rotateY(-12deg);
     transition:transform 1.2s cubic-bezier(.2,.8,.2,1);
     animation:float 6s ease-in-out infinite;
+    cursor: pointer;
   }
   @keyframes float{
     0%,100%{transform:rotateX(18deg) rotateY(-12deg) translateY(0)}
     50%{transform:rotateX(18deg) rotateY(-12deg) translateY(-8px)}
   }
   .cake-stage:hover{transform:rotateX(15deg) rotateY(8deg)}
+  .stage.editing-mode .cake-stage {
+    animation: none;
+  }
 
-  /* Plate */
+  /* Plate & 3D Shadows */
   .plate{
     position:absolute;left:50%;bottom:20px;
-    width:320px;height:36px;transform:translateX(-50%);
+    width:340px;height:36px;transform:translateX(-50%);
     background:radial-gradient(ellipse at 50% 40%, #fff 0%, var(--plate) 60%, #d9cdbd 100%);
     border-radius:50%;
-    box-shadow:0 30px 50px -20px rgba(60,40,30,.25), 0 6px 12px rgba(60,40,30,.08);
+    box-shadow:0 35px 60px -15px rgba(42,30,25,.4), 0 10px 20px rgba(42,30,25,.15);
   }
   .plate::after{
     content:"";position:absolute;left:50%;top:50%;
@@ -149,9 +171,9 @@
     position:relative;border-radius:50%/22px;
     background:linear-gradient(180deg,var(--cake) 0%, var(--cake-shade) 100%);
     box-shadow:
-      inset 0 -16px 24px rgba(0,0,0,.12),
-      inset 0 8px 14px rgba(255,255,255,.35),
-      0 18px 30px -12px rgba(80,40,55,.25);
+      inset 0 -16px 24px rgba(0,0,0,.14),
+      inset 0 8px 14px rgba(255,255,255,.4),
+      0 20px 35px -10px rgba(50,25,30,.3);
     transition:background .5s ease, box-shadow .5s ease;
   }
   .tier .icing{
@@ -167,8 +189,17 @@
     -webkit-mask:radial-gradient(10px 16px at 10px 0, #000 98%, transparent 100%) repeat-x;
             mask:radial-gradient(10px 16px at 10px 0, #000 98%, transparent 100%) repeat-x;
     -webkit-mask-size:20px 22px;mask-size:20px 22px;
-    transition:background .5s ease;
+    transition:background .5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
     opacity:.95;
+  }
+  
+  /* Icing Pour Animation Class */
+  .pour-anim {
+    animation: icingPour 0.6s ease forwards;
+  }
+  @keyframes icingPour {
+    0% { transform: scaleY(0.3); opacity: 0.5; }
+    100% { transform: scaleY(1); opacity: 0.95; }
   }
 
   /* Bottom tier */
@@ -181,12 +212,24 @@
   .tier.top{bottom:184px;width:140px}
   .tier.top .body{height:56px}
 
-  /* Toppings */
+  /* Toppings & Interactive Placement Container */
   .toppings{position:absolute;inset:0;pointer-events:none}
-  .candle-layer{pointer-events:auto}
+  .interactive-touch-area {
+    position: absolute; inset: 0; z-index: 10;
+  }
+  .stage:not(.editing-mode) .interactive-touch-area {
+    pointer-events: none;
+  }
+  
   .topping{
     position:absolute;transform:translate(-50%,-50%);
-    filter:drop-shadow(0 4px 4px rgba(0,0,0,.18));
+    filter:drop-shadow(0 4px 6px rgba(0,0,0,.25));
+    pointer-events: none;
+    animation: dropIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+  }
+  @keyframes dropIn {
+    0% { transform: translate(-50%, -150%) scale(0.5); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
   }
   .topping.cherry{
     width:14px;height:14px;border-radius:50%;
@@ -212,7 +255,9 @@
     position:absolute;transform:translate(-50%,-100%);
     width:9px;height:46px;cursor:pointer;
     transition:transform .2s ease;
+    z-index: 15;
   }
+  .stage.editing-mode .candle { pointer-events: none; }
   .candle:hover{transform:translate(-50%,-100%) scale(1.08)}
   .candle .stick{
     width:100%;height:100%;border-radius:3px 3px 1px 1px;
@@ -242,44 +287,82 @@
   .candle.out .flame{opacity:0;transform:translateX(-50%) scale(.4);transition:all .4s ease}
   .candle.out .wick{background:#1a1310}
 
-  /* ---------- Controls ---------- */
-  .panel{
-    margin-top:36px;width:100%;max-width:640px;
-    background:rgba(255,255,255,.6);
-    border:1px solid var(--line);
-    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-    border-radius:18px;
-    padding:22px 24px;
-    display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
-    opacity:0;transform:translateY(8px);pointer-events:none;
-    transition:opacity .6s ease, transform .6s ease;
+  /* ---------- Side Customization Panels ---------- */
+  .side-panel {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 180px;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    z-index: 30;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
   }
-  .panel.show{opacity:1;transform:none;pointer-events:auto}
-  .field{display:flex;flex-direction:column;gap:6px;min-width:0}
+  
+  .side-panel.left-panel { left: 40px; transform: translateY(-50%) translateX(-20px); }
+  .side-panel.right-panel { right: 40px; transform: translateY(-50%) translateX(20px); }
+  
+  .stage.editing-mode .side-panel.left-panel { opacity: 1; transform: translateY(-50%) translateX(0); pointer-events: auto; }
+  .stage.editing-mode .side-panel.right-panel { opacity: 1; transform: translateY(-50%) translateX(0); pointer-events: auto; }
+
+  .field{display:flex;flex-direction:column;gap:8px;min-width:0}
   .field label{
-    font-size:.62rem;font-weight:500;letter-spacing:.22em;
+    font-size:.65rem;font-weight:600;letter-spacing:.2em;
     text-transform:uppercase;color:var(--muted);
   }
-  .field select{
-    appearance:none;-webkit-appearance:none;
-    border:1px solid var(--line);background:#fff;
-    color:var(--ink);font-family:inherit;font-size:.85rem;
-    padding:9px 28px 9px 12px;border-radius:10px;cursor:pointer;
-    background-image:linear-gradient(45deg,transparent 50%,var(--ink-soft) 50%),linear-gradient(135deg,var(--ink-soft) 50%,transparent 50%);
-    background-position:calc(100% - 14px) 14px,calc(100% - 9px) 14px;
-    background-size:5px 5px;background-repeat:no-repeat;
-    transition:border-color .2s ease;
+  
+  /* Grid selection buttons instead of standard dropdowns */
+  .option-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
-  .field select:hover,.field select:focus{outline:none;border-color:var(--ink)}
-  @media (max-width:640px){
-    .panel{grid-template-columns:repeat(2,1fr)}
-    .cake-stage{transform:rotateX(18deg) rotateY(-12deg) scale(.85);animation:none}
+  .opt-btn {
+    appearance: none; border: 1px solid var(--line);
+    background: #fff; padding: 8px 4px; border-radius: 10px;
+    font-size: 0.75rem; font-family: inherit; color: var(--ink-soft);
+    cursor: pointer; text-align: center; transition: all 0.2s;
   }
+  .opt-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .opt-btn.active { background: var(--ink); border-color: var(--ink); color: var(--bg); font-weight: 500; }
 
-  /* Music + hint row */
+  /* Hint Overlay for Placement Mode */
+  .placement-hint {
+    position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);
+    font-size: 0.75rem; color: var(--accent); font-weight: 500; letter-spacing: 0.05em;
+    white-space: nowrap; opacity: 0; transition: opacity 0.3s;
+    background: rgba(255,255,255,0.9); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--accent-soft);
+  }
+  .stage.editing-mode .placement-hint.active { opacity: 1; }
+
+  /* Done Button Styling */
+  .done-container {
+    position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) scale(0.9);
+    opacity: 0; pointer-events: none; transition: all 0.5s ease; z-index: 35;
+  }
+  .stage.editing-mode .done-container { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
+
+  /* ---------- Actions & Greetings Row ---------- */
   .actions{
     margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:14px;
+    transition: opacity 0.5s;
   }
+  .stage:not(.has-edited) .actions, 
+  .stage:not(.has-edited) .hint {
+    opacity: 0; pointer-events: none;
+  }
+  .stage.editing-mode .actions { opacity: 0; pointer-events: none; }
+
   .hint{
     font-family:'Cormorant Garamond',serif;font-style:italic;
     color:var(--ink-soft);font-size:1.05rem;letter-spacing:.01em;
@@ -300,20 +383,25 @@
   .finale p{color:var(--ink-soft);font-size:.95rem;line-height:1.7;margin:0}
 
   /* Confetti canvas */
-  #fx{
-    position:fixed;inset:0;pointer-events:none;z-index:40;
-  }
+  #fx{position:fixed;inset:0;pointer-events:none;z-index:40;}
 
   /* footer signature */
   .sig{
     margin-top:48px;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;
     color:var(--muted);
   }
+
+  @media (max-width: 768px){
+    .side-panel { position: absolute; top: auto; bottom: 100px; width: calc(50% - 32px); transform: none !important; }
+    .side-panel.left-panel { left: 24px; }
+    .side-panel.right-panel { right: 24px; }
+    .stage.editing-mode .scene { transform: scale(0.95) translateY(-60px); }
+    .done-container { bottom: 20px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- Surprise gate -->
 <div class="gate" id="gate">
   <div class="gate-inner">
     <div class="eyebrow">a little something</div>
@@ -323,7 +411,6 @@
   </div>
 </div>
 
-<!-- Stage -->
 <main class="stage" id="stage">
   <header class="hero">
     <div class="eyebrow">for you · today</div>
@@ -336,75 +423,80 @@
 
   <div class="divider"></div>
 
-  <!-- Cake scene -->
   <div class="scene">
     <div class="cake-stage" id="cakeStage">
+      <div class="interactive-touch-area" id="touchArea"></div>
+      
       <div class="plate"></div>
 
       <div class="tier bottom">
         <div class="body" id="bodyBottom"></div>
         <div class="drip" id="dripBottom"></div>
         <div class="icing" id="icingBottom"></div>
-        <div class="toppings" id="topBottom"></div>
       </div>
 
       <div class="tier middle">
         <div class="body" id="bodyMiddle"></div>
         <div class="drip" id="dripMiddle"></div>
         <div class="icing" id="icingMiddle"></div>
-        <div class="toppings" id="topMiddle"></div>
       </div>
 
       <div class="tier top">
         <div class="body" id="bodyTop"></div>
         <div class="drip" id="dripTop"></div>
         <div class="icing" id="icingTop"></div>
-        <div class="toppings" id="topTop"></div>
-        <div class="toppings candle-layer" id="candleLayer"></div>
+      </div>
+      
+      <div class="toppings" id="placedToppings"></div>
+      <div class="toppings candle-layer" id="placedCandles"></div>
+      
+      <div class="placement-hint" id="placementHint">Tap anywhere on the cake to place!</div>
+    </div>
+  </div>
+
+  <div class="side-panel left-panel">
+    <div class="field">
+      <label>Toppings</label>
+      <div class="option-grid">
+        <button class="opt-btn item-sel" data-type="topping" data-val="cherry">🍒 Cherry</button>
+        <button class="opt-btn item-sel" data-type="topping" data-val="pearl">🐚 Pearl</button>
+        <button class="opt-btn item-sel" data-type="topping" data-val="star">⭐ Star</button>
+        <button class="opt-btn item-sel" data-type="topping" data-val="heart">💖 Heart</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Candles</label>
+      <div class="option-grid">
+        <button class="opt-btn item-sel" data-type="candle" data-val="candle">🕯️ Add</button>
+        <button class="opt-btn text-danger" id="clearDecor" style="grid-column: span 2; font-size:0.65rem; color:#c44a6a;">🗑️ Clear All</button>
       </div>
     </div>
   </div>
 
-  <!-- Controls -->
-  <div class="panel show" id="panel">
+  <div class="side-panel right-panel">
     <div class="field">
-      <label>Cake</label>
-      <select id="selCake">
-        <option value="strawberry">Strawberry</option>
-        <option value="ube">Ube</option>
-        <option value="vanilla">Vanilla</option>
-        <option value="matcha">Matcha</option>
-        <option value="cocoa">Cocoa</option>
-      </select>
+      <label>Cake Flavor</label>
+      <div class="option-grid">
+        <button class="opt-btn flavor-sel active" data-val="strawberry">Berry</button>
+        <button class="opt-btn flavor-sel" data-val="ube">Ube</button>
+        <button class="opt-btn flavor-sel" data-val="vanilla">Vanilla</button>
+        <button class="opt-btn flavor-sel" data-val="matcha">Matcha</button>
+        <button class="opt-btn flavor-sel" data-val="cocoa">Cocoa</button>
+      </div>
     </div>
     <div class="field">
-      <label>Icing</label>
-      <select id="selIcing">
-        <option value="cream">Cream</option>
-        <option value="pink">Blush</option>
-        <option value="lemon">Lemon</option>
-        <option value="chocolate">Chocolate</option>
-      </select>
+      <label>Icing Style</label>
+      <div class="option-grid">
+        <button class="opt-btn icing-sel active" data-val="cream">Cream</button>
+        <button class="opt-btn icing-sel" data-val="pink">Blush</button>
+        <button class="opt-btn icing-sel" data-val="lemon">Lemon</button>
+        <button class="opt-btn icing-sel" data-val="chocolate">Choc</button>
+      </div>
     </div>
-    <div class="field">
-      <label>Toppings</label>
-      <select id="selTop">
-        <option value="none">None</option>
-        <option value="cherry" selected>Cherries</option>
-        <option value="pearl">Pearls</option>
-        <option value="star">Stars</option>
-        <option value="heart">Hearts</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Candles</label>
-      <select id="selCandles">
-        <option value="1">1</option>
-        <option value="3" selected>3</option>
-        <option value="5">5</option>
-        <option value="7">7</option>
-      </select>
-    </div>
+  </div>
+
+  <div class="done-container">
+    <button class="btn" id="doneBtn" style="background:var(--accent); color:#fff; border-color:var(--accent);">✨ Perfect, Done!</button>
   </div>
 
   <div class="actions">
@@ -438,8 +530,7 @@ const ICING = {
   chocolate: ['#7a4a32','#4a2a1a'],
 };
 
-/* ---------------- Apply colors ---------------- */
-const root = document.documentElement;
+/* ---------------- Application Core ---------------- */
 function applyCake(v){
   const [a,b] = CAKE[v];
   document.querySelectorAll('.tier .body').forEach(el=>{
@@ -453,83 +544,138 @@ function applyIcing(v){
   });
   document.querySelectorAll('.tier .drip').forEach(el=>{
     el.style.background = a;
+    // Trigger quick pour fluid animation
+    el.classList.remove('pour-anim');
+    void el.offsetWidth;
+    el.classList.add('pour-anim');
   });
 }
 
-/* ---------------- Toppings ---------------- */
-const TOPPING_POSITIONS = {
-  bottom:[[15,30],[50,18],[85,30],[30,70],[70,70]],
-  middle:[[20,28],[50,18],[80,28],[35,68]],
-  top:[[30,32],[70,32]],
-};
-function applyToppings(kind){
-  ['Bottom','Middle','Top'].forEach(tier=>{
-    const el = document.getElementById('top'+tier);
-    el.innerHTML = '';
-    if(kind==='none') return;
-    const pts = TOPPING_POSITIONS[tier.toLowerCase()];
-    pts.forEach(([x,y])=>{
-      const t = document.createElement('div');
-      t.className = 'topping ' + kind;
-      t.style.left = x+'%';
-      t.style.top  = y+'%';
-      el.appendChild(t);
-    });
-  });
-}
+/* ---------------- Interactive Workflow Modes ---------------- */
+const stage = document.getElementById('stage');
+const cakeStage = document.getElementById('cakeStage');
+const touchArea = document.getElementById('touchArea');
+const placementHint = document.getElementById('placementHint');
 
-/* ---------------- Candles ---------------- */
-let candles = [];
-function applyCandles(n){
-  const layer = document.getElementById('candleLayer');
-  layer.innerHTML = '';
-  candles = [];
-  n = parseInt(n,10);
-  const spread = Math.min(70, 18 + (n-1)*12);
-  const start = 50 - spread/2;
-  for(let i=0;i<n;i++){
+let activeToolType = null; // 'topping' or 'candle'
+let activeToolValue = null; // 'cherry', 'pearl', etc.
+let candlesCount = [];
+
+// Tap Cake to Zoom & Enter Editing
+cakeStage.addEventListener('click', (e) => {
+  if (!stage.classList.contains('editing-mode') && !stage.classList.contains('has-edited')) {
+    stage.classList.add('editing-mode');
+  }
+});
+
+// Setup Menu Buttons
+document.querySelectorAll('.flavor-sel').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.flavor-sel').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyCake(btn.dataset.val);
+  });
+});
+
+document.querySelectorAll('.icing-sel').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.icing-sel').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyIcing(btn.dataset.val);
+  });
+});
+
+document.querySelectorAll('.item-sel').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('active')) {
+      btn.classList.remove('active');
+      activeToolType = null;
+      activeToolValue = null;
+      placementHint.classList.remove('active');
+    } else {
+      document.querySelectorAll('.item-sel').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeToolType = btn.dataset.type;
+      activeToolValue = btn.dataset.val;
+      placementHint.classList.add('active');
+    }
+  });
+});
+
+// Clear Decor Action
+document.getElementById('clearDecor').addEventListener('click', () => {
+  document.getElementById('placedToppings').innerHTML = '';
+  document.getElementById('placedCandles').innerHTML = '';
+  candlesCount = [];
+});
+
+// Manual Placement Engine
+touchArea.addEventListener('click', (e) => {
+  if (!activeToolType) return;
+  e.stopPropagation();
+
+  const rect = touchArea.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+  if (activeToolType === 'topping') {
+    const t = document.createElement('div');
+    t.className = 'topping ' + activeToolValue;
+    t.style.left = x + '%';
+    t.style.top = y + '%';
+    document.getElementById('placedToppings').appendChild(t);
+  } else if (activeToolType === 'candle') {
     const c = document.createElement('div');
     c.className = 'candle';
-    const x = n===1 ? 50 : start + (spread*(i/(n-1)));
-    c.style.left = x+'%';
-    c.style.top  = '8%';
+    c.style.left = x + '%';
+    c.style.top = y + '%';
     c.innerHTML = '<div class="stick"></div><div class="wick"></div><div class="flame"></div>';
-    c.addEventListener('click', e=>{
-      e.stopPropagation();
+    
+    c.addEventListener('click', (evt) => {
+      if (stage.classList.contains('editing-mode')) return;
+      evt.stopPropagation();
       blowCandle(c);
     });
-    layer.appendChild(c);
-    candles.push(c);
+    
+    document.getElementById('placedCandles').appendChild(c);
+    candlesCount.push(c);
   }
-}
+});
+
+// Exit Customization (Done Button)
+document.getElementById('doneBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  stage.classList.remove('editing-mode');
+  stage.classList.add('has-edited');
+  document.querySelectorAll('.item-sel').forEach(b => b.classList.remove('active'));
+  activeToolType = null;
+  activeToolValue = null;
+  placementHint.classList.remove('active');
+});
 
 function blowCandle(c){
   if(c.classList.contains('out')) return;
   c.classList.add('out');
   puff(c);
-  if(candles.every(x=>x.classList.contains('out'))){
+  if(candlesCount.every(x => x.classList.contains('out'))){
     setTimeout(celebrate, 450);
   }
 }
 
-/* ---------------- Init ---------------- */
-document.getElementById('selCake').addEventListener('change', e=>applyCake(e.target.value));
-document.getElementById('selIcing').addEventListener('change', e=>applyIcing(e.target.value));
-document.getElementById('selTop').addEventListener('change', e=>applyToppings(e.target.value));
-document.getElementById('selCandles').addEventListener('change', e=>applyCandles(e.target.value));
-
+/* ---------------- Init Defaults ---------------- */
 applyCake('strawberry');
 applyIcing('cream');
-applyToppings('cherry');
-applyCandles(3);
 
 /* ---------------- Surprise gate ---------------- */
 document.getElementById('openBtn').addEventListener('click', ()=>{
   document.getElementById('gate').classList.add('hidden');
-  setTimeout(()=>document.getElementById('stage').classList.add('show'), 100);
+  setTimeout(()=> {
+    stage.classList.add('show');
+    // Pre-open context setup directly into interactive framework
+  }, 100);
 });
 
-/* ---------------- Music ---------------- */
+/* ---------------- Music Engine ---------------- */
 let audioCtx, songPlaying = false;
 const musicBtn = document.getElementById('musicBtn');
 musicBtn.addEventListener('click', ()=>{
@@ -541,9 +687,7 @@ function playBirthdaySong(){
   if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
   songPlaying = true;
   musicBtn.textContent = '♪  Playing…';
-  // Happy Birthday melody
   const N = (n)=>440*Math.pow(2,(n-69)/12);
-  // notes: [midi, beats]
   const tune = [
     [60,.75],[60,.25],[62,1],[60,1],[65,1],[64,2],
     [60,.75],[60,.25],[62,1],[60,1],[67,1],[65,2],
@@ -568,7 +712,7 @@ function playBirthdaySong(){
   setTimeout(()=>{ songPlaying=false; musicBtn.textContent='▶  Play Again'; }, (t-audioCtx.currentTime)*1000);
 }
 
-/* ---------------- FX: puff + confetti + fireworks ---------------- */
+/* ---------------- FX Mechanics ---------------- */
 const canvas = document.getElementById('fx');
 const ctx = canvas.getContext('2d');
 function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
@@ -583,7 +727,7 @@ function tick(){
     p.x += p.vx; p.y += p.vy;
     p.life -= 1;
     ctx.globalAlpha = Math.max(0, p.life/p.max);
-    if(p.shape==='circle'){
+    if(p.shape=='circle'){
       ctx.fillStyle = p.color;
       ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
     } else {
@@ -638,12 +782,10 @@ function confettiBurst(){
 function celebrate(){
   document.getElementById('finale').classList.add('show');
   confettiBurst();
-  // sequence of fireworks
   const shots = [[.2,.3],[.8,.25],[.5,.2],[.3,.45],[.75,.4]];
   shots.forEach(([fx,fy],i)=>{
     setTimeout(()=>firework(canvas.width*fx, canvas.height*fy), i*350);
   });
-  // gentle chime
   try{
     if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
     [72,76,79,84].forEach((m,i)=>{
