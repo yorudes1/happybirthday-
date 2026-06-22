@@ -8,11 +8,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+
   :root{
     --bg:#f6f1ea; --ink:#2a2421; --ink-soft:#6b605a; --muted:#a89e95;
     --line:rgba(42,36,33,.12); --accent:#c44a6a;
     --cream:#fce4b6; --icing:#f5e6c8; --pink:#f4b9c9; --pink-deep:#e08aa3;
   }
+
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
@@ -47,45 +49,46 @@
   .stage.show{opacity:1;transform:none}
   header.hero{text-align:center;max-width:640px}
   header h1{font-family:'Cormorant Garamond',serif;font-weight:400;font-style:italic;
-    font-size:clamp(2.1rem,5vw,3.5rem);line-height:1.05;margin:6px 0 8px;white-space:nowrap}
+    font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.05;margin:6px 0 8px;white-space:nowrap}
   header h1 em{font-style:italic;color:var(--ink)}
-  header .wish{color:var(--ink-soft);font-size:.96rem;line-height:1.6;max-width:520px;margin:0 auto}
+  header .wish{color:var(--ink-soft);font-size:.84rem;line-height:1.6;max-width:480px;margin:0 auto}
 
-  .workspace{margin-top:96px;position:relative;width:100%;max-width:980px;
+  .workspace{margin-top:8px;position:relative;width:100%;max-width:980px;
     display:flex;align-items:center;justify-content:center;min-height:360px;}
- 
+
   .side{position:absolute;top:50%;transform:translateY(-50%) translateY(8px);
-    width:190px;opacity:0;pointer-events:none;
+    width:170px;opacity:0;pointer-events:none;
     transition:opacity .5s ease, transform .5s ease;}
+
   #leftSide{left:8px}
   #rightSide{right:8px}
+
   .workspace.editing .side{opacity:1;transform:translateY(-50%);pointer-events:auto}
-  .side h4{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:500}
+  .side h4{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:500}
   .side .group{margin-bottom:12px;background:rgba(255,255,255,.7);border:1px solid var(--line);
-    border-radius:12px;padding:12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
-  .swatches{display:flex;flex-wrap:wrap;gap:8px}
-  .sw{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid #fff;
+    border-radius:12px;padding:10px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+  .swatches{display:flex;flex-wrap:wrap;gap:6px}
+  .sw{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid #fff;
     box-shadow:0 2px 5px rgba(0,0,0,.12);transition:transform .15s ease;}
   .sw:hover{transform:scale(1.1)}
   .sw.active{outline:2px solid var(--ink);outline-offset:2px}
   .pickbtn{display:flex;align-items:center;gap:8px;width:100%;
-    padding:8px 10px;border:1px solid var(--line);background:#fff;border-radius:9px;
-    cursor:pointer;margin-bottom:5px;font-size:.84rem;color:var(--ink);transition:all .15s;
+    padding:6px 8px;border:1px solid var(--line);background:#fff;border-radius:9px;
+    cursor:pointer;margin-bottom:5px;font-size:.72rem;color:var(--ink);transition:all .15s;
     font-family:inherit;}
   .pickbtn:hover{border-color:var(--ink)}
   .pickbtn.armed{border-color:var(--accent);background:#fff2f5}
-  .tp-icon{width:18px;display:inline-flex;justify-content:center;font-size:15px}
+  .tp-icon{width:16px;display:inline-flex;justify-content:center;font-size:13px}
 
   /*Cake*/
   .cake-wrap{position:relative;cursor:pointer;
     transition:transform .6s cubic-bezier(.2,.8,.2,1);
     filter:drop-shadow(0 26px 18px rgba(120,60,80,.22)) drop-shadow(0 5px 8px rgba(120,60,80,.12));}
-  .workspace.editing .cake-wrap{transform:scale(1.2)}
+  .workspace.editing .cake-wrap{transform:scale(1.12)}
   .cake-wrap.arm{cursor:crosshair}
-  .cake-svg{display:block;width:340px;height:340px;overflow:visible;pointer-events:none}
+  .cake-svg{display:block;width:300px;height:300px;overflow:visible;pointer-events:none}
   .cake-svg *{pointer-events:auto}
 
-  
   .pour-wrap{position:absolute;left:50%;top:78px;width:240px;height:0;pointer-events:none;
     transform:translateX(-50%);z-index:2;opacity:0;transition:opacity .25s ease;}
   .pour-col{position:absolute;top:0;width:6px;border-radius:0 0 50% 50%/0 0 8px 8px;
@@ -127,8 +130,9 @@
     border-radius:50% 50% 40% 40%/60% 60% 40% 40%;
     box-shadow:0 0 10px rgba(255,179,71,.7),0 0 24px rgba(255,179,71,.45);
     animation:flicker .18s ease-in-out infinite alternate;transform-origin:50% 100%}
+
   @keyframes flicker{from{transform:translateX(-50%) scale(1) rotate(-2deg)}
-                      to{transform:translateX(-50%) scale(1.08,1.12) rotate(2deg)}}
+                     to{transform:translateX(-50%) scale(1.08,1.12) rotate(2deg)}}
   .at-candle.out .flame{opacity:0;transform:translateX(-50%) scale(.4);transition:all .4s ease}
   .at-candle.out .wick{background:#1a1310}
 
@@ -144,7 +148,7 @@
     transition:opacity 1s ease, transform 1s ease;pointer-events:none}
   .greeting.show{opacity:1;transform:none;pointer-events:auto}
   .greeting h3{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
-    font-size:clamp(1.5rem,3.5vw,2.2rem);margin:0 0 6px;color:var(--accent)}
+    font-size:clamp(1.4rem,3vw,2rem);margin:0 0 6px;color:var(--accent)}
   .greeting p{color:var(--ink-soft);font-size:.85rem;line-height:1.6;margin:0 0 14px}
 
   #fx{position:fixed;inset:0;pointer-events:none;z-index:40}
@@ -156,6 +160,7 @@
     .workspace.editing .side{transform:none}
     .workspace.editing .cake-wrap{transform:scale(1.05)}
   }
+  
 </style>
 </head>
 <body>
@@ -179,265 +184,525 @@
 
   <div class="workspace" id="workspace">
     <aside class="side" id="leftSide">
+
       <div class="group">
+
         <h4>Toppings</h4>
+
         <button class="pickbtn" data-topping="cherry"><span class="tp-icon">🍒</span>Cherry</button>
+
         <button class="pickbtn" data-topping="blueberry"><span class="tp-icon">🫐</span>Blueberry</button>
+
         <button class="pickbtn" data-topping="pearl"><span class="tp-icon">⚪</span>Pearl</button>
+
         <button class="pickbtn" data-topping="strawberry"><span class="tp-icon">🍓</span>Strawberry</button>
+
       </div>
+
       <div class="group">
+
         <h4>Candles</h4>
+
         <button class="pickbtn" id="candleBtn"><span class="tp-icon">🕯️</span>Add candle</button>
+
         <button class="pickbtn" id="clearBtn" style="border-style:dashed;justify-content:center">Clear all</button>
+
       </div>
+
     </aside>
+
+
 
     <div class="cake-wrap" id="cakeWrap">
+
       <div class="pour-wrap" id="pourWrap"></div>
+
       <svg class="cake-svg" id="cakeSvg" viewBox="0 0 340 340">
+
         <defs>
+
           <pattern id="stripe" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+
             <rect width="3.5" height="7" fill="#fff"/>
+
             <rect x="3.5" width="3.5" height="7" fill="#ef6172"/>
+
           </pattern>
+
           <radialGradient id="botGrad" cx="50%" cy="40%" r="70%">
+
             <stop offset="0%" stop-color="#fcd0dc"/>
+
             <stop offset="100%" stop-color="#e08aa3"/>
+
           </radialGradient>
+
           <radialGradient id="topGrad" cx="50%" cy="40%" r="70%">
+
             <stop offset="0%" stop-color="#fcd6df"/>
+
             <stop offset="100%" stop-color="#e597af"/>
+
           </radialGradient>
+
           <linearGradient id="plateG" x1="0" x2="0" y1="0" y2="1">
+
             <stop offset="0%" stop-color="#d6ece6"/>
+
             <stop offset="100%" stop-color="#a8d3c8"/>
+
           </linearGradient>
+
         </defs>
 
-         
+
+
+        
+
         <ellipse cx="170" cy="320" rx="130" ry="6" fill="#000" opacity=".14"/>
+
         <ellipse cx="170" cy="312" rx="128" ry="12" fill="url(#plateG)"/>
+
         <ellipse cx="170" cy="309" rx="122" ry="9" fill="#e6f3ef"/>
 
-       
+
+
+      
+
         <path data-body="bot" d="M52,302 L52,214 Q52,202 170,202 Q288,202 288,214 L288,302 Q288,316 170,316 Q52,316 52,302 Z" fill="url(#botGrad)"/>
-         
+
+        
+
         <ellipse cx="120" cy="250" rx="18" ry="40" fill="#fff" opacity=".18"/>
 
-         
+
+
+        
+
         <path id="botIcing" d="M52,214 Q52,200 170,200 Q288,200 288,214
+
           L288,232 Q278,260 264,236 Q250,216 234,246 Q220,268 204,238 Q188,218 172,248
+
           Q158,270 142,240 Q126,218 110,248 Q96,268 80,238 Q66,218 52,236 Z" fill="#f5e6c8"/>
+
         <path d="M62,212 Q170,198 278,212 Q170,206 62,212 Z" fill="#fff" opacity=".4"/>
 
-        
-        <path data-body="top" d="M96,202 L96,134 Q96,122 170,122 Q244,122 244,134 L244,202 Q244,212 170,212 Q96,212 96,202 Z" fill="url(#topGrad)"/>
-        <ellipse cx="130" cy="170" rx="13" ry="28" fill="#fff" opacity=".2"/>
 
-        
-        <path id="topIcing" d="M96,134 Q96,120 170,120 Q244,120 244,134
-          L244,150 Q236,172 224,150 Q212,132 198,158 Q184,178 170,150 Q156,132 142,158 Q130,178 116,150 Q104,132 96,154 Z" fill="#f5e6c8"/>
-        <path d="M106,128 Q170,116 234,128 Q170,124 106,128 Z" fill="#fff" opacity=".4"/>
 
        
+
+        <path data-body="top" d="M96,202 L96,134 Q96,122 170,122 Q244,122 244,134 L244,202 Q244,212 170,212 Q96,212 96,202 Z" fill="url(#topGrad)"/>
+
+        <ellipse cx="130" cy="170" rx="13" ry="28" fill="#fff" opacity=".2"/>
+
+
+
+       
+
+        <path id="topIcing" d="M96,134 Q96,120 170,120 Q244,120 244,134
+
+          L244,150 Q236,172 224,150 Q212,132 198,158 Q184,178 170,150 Q156,132 142,158 Q130,178 116,150 Q104,132 96,154 Z" fill="#f5e6c8"/>
+
+        <path d="M106,128 Q170,116 234,128 Q170,124 106,128 Z" fill="#fff" opacity=".4"/>
+
+
+
+      
+
         <g id="defaultCandles">
+
           <g class="dcandle" transform="translate(140,78)">
+
             <rect x="-3.5" y="0" width="7" height="42" rx="2" fill="url(#stripe)"/>
+
             <line x1="0" y1="-3" x2="0" y2="0" stroke="#3a2a22" stroke-width="1.5"/>
+
             <path class="flm" d="M-4,-9 Q0,-20 4,-9 Q2,-3 0,-2 Q-2,-3 -4,-9 Z" fill="#ffb347"/>
+
             <path class="flm" d="M-2,-8 Q0,-16 2,-8 Q1,-4 0,-3 Q-1,-4 -2,-8 Z" fill="#ffe89a"/>
+
           </g>
+
           <g class="dcandle" transform="translate(170,72)">
+
             <rect x="-3.5" y="0" width="7" height="48" rx="2" fill="url(#stripe)"/>
+
             <line x1="0" y1="-3" x2="0" y2="0" stroke="#3a2a22" stroke-width="1.5"/>
+
             <path class="flm" d="M-4,-9 Q0,-20 4,-9 Q2,-3 0,-2 Q-2,-3 -4,-9 Z" fill="#ffb347"/>
+
             <path class="flm" d="M-2,-8 Q0,-16 2,-8 Q1,-4 0,-3 Q-1,-4 -2,-8 Z" fill="#ffe89a"/>
+
           </g>
+
           <g class="dcandle" transform="translate(200,78)">
+
             <rect x="-3.5" y="0" width="7" height="42" rx="2" fill="url(#stripe)"/>
+
             <line x1="0" y1="-3" x2="0" y2="0" stroke="#3a2a22" stroke-width="1.5"/>
+
             <path class="flm" d="M-4,-9 Q0,-20 4,-9 Q2,-3 0,-2 Q-2,-3 -4,-9 Z" fill="#ffb347"/>
+
             <path class="flm" d="M-2,-8 Q0,-16 2,-8 Q1,-4 0,-3 Q-1,-4 -2,-8 Z" fill="#ffe89a"/>
+
           </g>
+
         </g>
+
       </svg>
+
       <div class="overlay" id="overlay"></div>
+
     </div>
 
+
+
     <aside class="side" id="rightSide">
+
       <div class="group">
+
         <h4>Cake flavor</h4>
+
         <div class="swatches" id="cakeSwatches"></div>
+
       </div>
+
       <div class="group">
+
         <h4>Icing</h4>
+
         <div class="swatches" id="icingSwatches"></div>
+
       </div>
+
     </aside>
+
   </div>
 
+
+
   <div class="done-row" id="doneRow">
+
     <button class="btn" id="doneBtn">Done</button>
+
   </div>
+
+
 
   <div class="hint" id="hint">Tap the cake to customize it. <span class="dot"></span> Add your favorite toppings and candles!✨</div>
 
+
+
   <section class="greeting" id="greeting">
-    <h3>Make a wish. Tap each candle to blow it out.</h3>
-    <p>Take care and enjoy your special day.</p>
+
+    <h3>Take care and enjoy your special day.</h3>
+
+    <p>I love you always.</p>
+
     <button class="btn ghost" id="musicBtn">▶  Play Birthday Song</button>
+
   </section>
 
+
+
   <div class="sig">Love, Hana</div>
+
 </main>
+
+
 
 <canvas id="fx"></canvas>
 
+
+
 <script>
 
+
+
 const CAKE_FLAVORS = {
+
   strawberry:{top:['#fcd6df','#e597af'], bot:['#fcd0dc','#e08aa3']},
+
   blush:{top:['#fde3ea','#eaa9bd'], bot:['#fcdbe5','#dd9bb1']},
+
   ube:{top:['#e3d5f2','#9b7fc7'], bot:['#dccdf0','#8d6fc0']},
+
   matcha:{top:['#dfeccd','#a8c97a'], bot:['#d6e5c2','#9bc06b']},
+
   cocoa:{top:['#e0c3a8','#a8784f'], bot:['#d4b292','#9a6c42']},
+
   vanilla:{top:['#fdeecb','#e2c98c'], bot:['#fce4b6','#d8bc7a']}
+
 };
+
 const ICING_FLAVORS = {
+
   cream:'#f5e6c8', strawberry:'#ef6172', chocolate:'#7a4a32', lemon:'#f0dd8a', blush:'#f5b8c8'
+
 };
+
+
+
 
 
 function buildSwatches(containerId, items, activeKey, onPick){
+
   const c = document.getElementById(containerId);
+
   items.forEach(([k,display])=>{
+
     const s=document.createElement('div');
+
     s.className='sw'+(k===activeKey?' active':'');
+
     s.style.background=display; s.title=k.charAt(0).toUpperCase()+k.slice(1);
+
     s.addEventListener('click',(e)=>{
+
       e.stopPropagation();
+
       c.querySelectorAll('.sw').forEach(x=>x.classList.remove('active'));
+
       s.classList.add('active');
+
       onPick(k);
+
     });
+
     c.appendChild(s);
+
   });
+
 }
+
+
 
 buildSwatches('cakeSwatches',
+
   Object.entries(CAKE_FLAVORS).map(([k,v])=>[k, `linear-gradient(135deg, ${v.bot[0]}, ${v.bot[1]})`]),
+
   'strawberry',
+
   (k)=>{
+
     const v = CAKE_FLAVORS[k];
+
     document.querySelector('#botGrad stop:first-child').setAttribute('stop-color', v.bot[0]);
+
     document.querySelector('#botGrad stop:last-child').setAttribute('stop-color', v.bot[1]);
+
     document.querySelector('#topGrad stop:first-child').setAttribute('stop-color', v.top[0]);
+
     document.querySelector('#topGrad stop:last-child').setAttribute('stop-color', v.top[1]);
+
   }
+
 );
+
+
 
 buildSwatches('icingSwatches',
+
   Object.entries(ICING_FLAVORS),
+
   'cream',
+
   (k)=>{
+
     const v = ICING_FLAVORS[k];
-     
+
+    
+
     const wrap = document.getElementById('pourWrap');
+
     wrap.innerHTML = '';
+
     wrap.style.opacity='1';
+
     const cols = 9;
+
     const spacing = 240/(cols-1);
+
     for(let i=0;i<cols;i++){
+
       const col=document.createElement('div');
+
       col.className='pour-col';
+
       col.style.left=(i*spacing - 3)+'px';
+
       col.style.background=v;
+
       const delay = Math.abs(i-(cols-1)/2)*40 + Math.random()*60;
+
       wrap.appendChild(col);
+
       setTimeout(()=>{ col.style.height=(70+Math.random()*40)+'px'; }, delay);
+
     }
+
     setTimeout(()=>{
+
       document.getElementById('botIcing').setAttribute('fill', v);
+
       document.getElementById('topIcing').setAttribute('fill', v);
+
       document.querySelector('#stripe rect:last-child').setAttribute('fill', v==='#f5e6c8' ? '#ef6172' : v);
+
       wrap.style.opacity='0';
+
       setTimeout(()=>{ wrap.innerHTML=''; }, 350);
+
     }, 950);
+
   }
+
 );
 
+
+
 const workspace = document.getElementById('workspace');
+
 const cakeWrap  = document.getElementById('cakeWrap');
+
 const hint      = document.getElementById('hint');
+
 const greeting  = document.getElementById('greeting');
+
 const doneRow   = document.getElementById('doneRow');
+
 let armed = null;
 
+
+
 cakeWrap.addEventListener('click', (e)=>{
+
   if(!workspace.classList.contains('editing')){
+
     workspace.classList.add('editing');
+
     doneRow.classList.add('show');
+
     hint.textContent = 'pick a flavor, pour your icing, then tap the cake to place toppings & candles';
+
     return;
+
   }
+
   if(armed) placeItem(e);
+
 });
+
+
 
 document.querySelectorAll('.pickbtn[data-topping]').forEach(btn=>{
+
   btn.addEventListener('click',(e)=>{
+
     e.stopPropagation();
+
     document.querySelectorAll('.pickbtn').forEach(b=>b.classList.remove('armed'));
+
     btn.classList.add('armed');
+
     armed = {type:'topping', value: btn.dataset.topping};
+
     cakeWrap.classList.add('arm');
+
   });
+
 });
+
 document.getElementById('candleBtn').addEventListener('click',(e)=>{
+
   e.stopPropagation();
+
   document.querySelectorAll('.pickbtn').forEach(b=>b.classList.remove('armed'));
+
   document.getElementById('candleBtn').classList.add('armed');
+
   armed = {type:'candle'};
+
   cakeWrap.classList.add('arm');
+
 });
+
 document.getElementById('clearBtn').addEventListener('click',(e)=>{
+
   e.stopPropagation();
+
   document.getElementById('overlay').innerHTML='';
+
   document.getElementById('defaultCandles').style.display='';
+
 });
+
+
 
 function placeItem(e){
+
   const rect = cakeWrap.getBoundingClientRect();
+
   const x = ((e.clientX - rect.left)/rect.width)*100;
+
   const y = ((e.clientY - rect.top )/rect.height)*100;
+
   const overlay = document.getElementById('overlay');
+
   if(armed.type==='topping'){
+
     const t=document.createElement('div');
+
     t.className='at at-'+armed.value;
+
     t.style.left=x+'%'; t.style.top=y+'%';
+
     overlay.appendChild(t);
+
   } else {
+
     document.getElementById('defaultCandles').style.display='none';
+
     const c=document.createElement('div');
+
     c.className='at at-candle';
+
     c.style.left=x+'%'; c.style.top=y+'%';
+
     c.innerHTML='<div class="stick"></div><div class="wick"></div><div class="flame"></div>';
+
     c.addEventListener('click',(ev)=>{
+
       ev.stopPropagation();
+
       if(workspace.classList.contains('editing')) return;
+
       if(c.classList.contains('out')) return;
+
       c.classList.add('out');
+
       puff(c);
+
       checkAllOut();
+
     });
+
     overlay.appendChild(c);
+
   }
+
 }
 
+
+
 document.querySelectorAll('#defaultCandles .dcandle').forEach(g=>{
+
   g.style.cursor='pointer';
+
   g.addEventListener('click',(e)=>{
+
     e.stopPropagation();
+
     if(workspace.classList.contains('editing')) return;
     if(g.dataset.out) return;
     g.dataset.out='1';
@@ -445,8 +710,8 @@ document.querySelectorAll('#defaultCandles .dcandle').forEach(g=>{
     const r=g.getBoundingClientRect(); puffAt(r.left+r.width/2, r.top);
     checkAllOut();
   });
-});
 
+});
 function checkAllOut(){
   const added=[...document.querySelectorAll('.at-candle')];
   const def=[...document.querySelectorAll('#defaultCandles .dcandle')]
@@ -455,8 +720,8 @@ function checkAllOut(){
   if(!list.length) return;
   const allOut = list.every(x => x.classList.contains('out') || x.dataset.out);
   if(allOut) setTimeout(celebrate, 450);
-}
 
+}
 document.getElementById('doneBtn').addEventListener('click',()=>{
   workspace.classList.remove('editing');
   doneRow.classList.remove('show');
@@ -464,18 +729,20 @@ document.getElementById('doneBtn').addEventListener('click',()=>{
   armed=null; cakeWrap.classList.remove('arm');
   hint.textContent = 'make a wish — tap each candle to blow it out';
   greeting.classList.add('show');
+
 });
 
 document.getElementById('openBtn').addEventListener('click', ()=>{
   document.getElementById('gate').classList.add('hidden');
   setTimeout(()=>document.getElementById('stage').classList.add('show'), 100);
-});
 
+});
 let audioCtx, songPlaying = false;
 const musicBtn = document.getElementById('musicBtn');
 musicBtn.addEventListener('click', ()=>{
   if(songPlaying) return;
   playBirthdaySong();
+
 });
 function playBirthdaySong(){
   if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
@@ -486,6 +753,7 @@ function playBirthdaySong(){
     [60,.75],[60,.25],[62,1],[60,1],[67,1],[65,2],
     [60,.75],[60,.25],[72,1],[69,1],[65,1],[64,1],[62,2],
     [70,.75],[70,.25],[69,1],[65,1],[67,1],[65,2],
+
   ];
   let t = audioCtx.currentTime + 0.05; const bpm=120, beat=60/bpm;
   tune.forEach(([m,b])=>{
@@ -496,10 +764,11 @@ function playBirthdaySong(){
     g.gain.exponentialRampToValueAtTime(.001,t+dur*.95);
     osc.connect(g).connect(audioCtx.destination);
     osc.start(t); osc.stop(t+dur); t+=dur;
+
   });
   setTimeout(()=>{ songPlaying=false; musicBtn.textContent='▶  Play Again'; }, (t-audioCtx.currentTime)*1000);
-}
 
+}
 const canvas=document.getElementById('fx'); const ctx=canvas.getContext('2d');
 function resize(){canvas.width=innerWidth;canvas.height=innerHeight} resize(); addEventListener('resize',resize);
 let particles=[];
@@ -512,13 +781,16 @@ function tick(){
     if(p.shape==='circle'){ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();}
     else{ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);ctx.restore();p.rot+=.1;}
   });
+  
   ctx.globalAlpha=1; requestAnimationFrame(tick);
+
 } tick();
 function puffAt(x,y){
   for(let i=0;i<14;i++){
     particles.push({x,y,vx:(Math.random()-.5)*1.5,vy:-Math.random()*1.5-.3,g:-.01,
       r:2+Math.random()*2,life:40,max:40,color:'rgba(220,220,220,.7)',shape:'circle'});
   }
+
 }
 function puff(el){const r=el.getBoundingClientRect();puffAt(r.left+r.width/2,r.top)}
 const PALETTE=['#c44a6a','#e7a6b6','#f4c95d','#9bbf7a','#c9b6e6','#ffffff'];
@@ -529,18 +801,21 @@ function firework(x,y){
     particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,g:.04,r:2+Math.random()*2,
       life:80,max:80,color:PALETTE[i%PALETTE.length],shape:'circle'});
   }
+  
 }
 function confettiBurst(){
-  for(let i=0;i<140;i++){
+  for(let i=0;i<14z;i++){
     particles.push({x:Math.random()*canvas.width,y:-20,vx:(Math.random()-.5)*2,vy:Math.random()*3+2,
       g:.03,r:3+Math.random()*4,life:240,max:240,color:PALETTE[i%PALETTE.length],shape:'rect',rot:Math.random()*Math.PI});
   }
+  
 }
 function celebrate(){
   greeting.classList.add('show');
   confettiBurst();
   [[.2,.3],[.8,.25],[.5,.2],[.3,.45],[.75,.4]].forEach(([fx,fy],i)=>{
     setTimeout(()=>firework(canvas.width*fx,canvas.height*fy),i*350);
+
   });
   try{
     if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
@@ -554,6 +829,7 @@ function celebrate(){
     });
   }catch(e){}
 }
+
 </script>
 </body>
-</html>
+</html> 
