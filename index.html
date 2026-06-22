@@ -47,42 +47,42 @@
   .stage.show{opacity:1;transform:none}
   header.hero{text-align:center;max-width:640px}
   header h1{font-family:'Cormorant Garamond',serif;font-weight:400;font-style:italic;
-    font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.05;margin:6px 0 8px;white-space:nowrap}
+    font-size:clamp(2.1rem,5vw,3.5rem);line-height:1.05;margin:6px 0 8px;white-space:nowrap}
   header h1 em{font-style:italic;color:var(--ink)}
-  header .wish{color:var(--ink-soft);font-size:.84rem;line-height:1.6;max-width:480px;margin:0 auto}
+  header .wish{color:var(--ink-soft);font-size:.96rem;line-height:1.6;max-width:520px;margin:0 auto}
 
-  .workspace{margin-top:8px;position:relative;width:100%;max-width:980px;
+  .workspace{margin-top:96px;position:relative;width:100%;max-width:980px;
     display:flex;align-items:center;justify-content:center;min-height:360px;}
  
   .side{position:absolute;top:50%;transform:translateY(-50%) translateY(8px);
-    width:170px;opacity:0;pointer-events:none;
+    width:190px;opacity:0;pointer-events:none;
     transition:opacity .5s ease, transform .5s ease;}
   #leftSide{left:8px}
   #rightSide{right:8px}
   .workspace.editing .side{opacity:1;transform:translateY(-50%);pointer-events:auto}
-  .side h4{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:500}
+  .side h4{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:500}
   .side .group{margin-bottom:12px;background:rgba(255,255,255,.7);border:1px solid var(--line);
-    border-radius:12px;padding:10px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
-  .swatches{display:flex;flex-wrap:wrap;gap:6px}
-  .sw{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid #fff;
+    border-radius:12px;padding:12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+  .swatches{display:flex;flex-wrap:wrap;gap:8px}
+  .sw{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid #fff;
     box-shadow:0 2px 5px rgba(0,0,0,.12);transition:transform .15s ease;}
   .sw:hover{transform:scale(1.1)}
   .sw.active{outline:2px solid var(--ink);outline-offset:2px}
   .pickbtn{display:flex;align-items:center;gap:8px;width:100%;
-    padding:6px 8px;border:1px solid var(--line);background:#fff;border-radius:9px;
-    cursor:pointer;margin-bottom:5px;font-size:.72rem;color:var(--ink);transition:all .15s;
+    padding:8px 10px;border:1px solid var(--line);background:#fff;border-radius:9px;
+    cursor:pointer;margin-bottom:5px;font-size:.84rem;color:var(--ink);transition:all .15s;
     font-family:inherit;}
   .pickbtn:hover{border-color:var(--ink)}
   .pickbtn.armed{border-color:var(--accent);background:#fff2f5}
-  .tp-icon{width:16px;display:inline-flex;justify-content:center;font-size:13px}
+  .tp-icon{width:18px;display:inline-flex;justify-content:center;font-size:15px}
 
   /*Cake*/
   .cake-wrap{position:relative;cursor:pointer;
     transition:transform .6s cubic-bezier(.2,.8,.2,1);
     filter:drop-shadow(0 26px 18px rgba(120,60,80,.22)) drop-shadow(0 5px 8px rgba(120,60,80,.12));}
-  .workspace.editing .cake-wrap{transform:scale(1.12)}
+  .workspace.editing .cake-wrap{transform:scale(1.2)}
   .cake-wrap.arm{cursor:crosshair}
-  .cake-svg{display:block;width:300px;height:300px;overflow:visible;pointer-events:none}
+  .cake-svg{display:block;width:340px;height:340px;overflow:visible;pointer-events:none}
   .cake-svg *{pointer-events:auto}
 
   
@@ -128,7 +128,7 @@
     box-shadow:0 0 10px rgba(255,179,71,.7),0 0 24px rgba(255,179,71,.45);
     animation:flicker .18s ease-in-out infinite alternate;transform-origin:50% 100%}
   @keyframes flicker{from{transform:translateX(-50%) scale(1) rotate(-2deg)}
-                     to{transform:translateX(-50%) scale(1.08,1.12) rotate(2deg)}}
+                      to{transform:translateX(-50%) scale(1.08,1.12) rotate(2deg)}}
   .at-candle.out .flame{opacity:0;transform:translateX(-50%) scale(.4);transition:all .4s ease}
   .at-candle.out .wick{background:#1a1310}
 
@@ -144,7 +144,7 @@
     transition:opacity 1s ease, transform 1s ease;pointer-events:none}
   .greeting.show{opacity:1;transform:none;pointer-events:auto}
   .greeting h3{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
-    font-size:clamp(1.4rem,3vw,2rem);margin:0 0 6px;color:var(--accent)}
+    font-size:clamp(1.5rem,3.5vw,2.2rem);margin:0 0 6px;color:var(--accent)}
   .greeting p{color:var(--ink-soft);font-size:.85rem;line-height:1.6;margin:0 0 14px}
 
   #fx{position:fixed;inset:0;pointer-events:none;z-index:40}
@@ -215,32 +215,32 @@
           </linearGradient>
         </defs>
 
-        
+         
         <ellipse cx="170" cy="320" rx="130" ry="6" fill="#000" opacity=".14"/>
         <ellipse cx="170" cy="312" rx="128" ry="12" fill="url(#plateG)"/>
         <ellipse cx="170" cy="309" rx="122" ry="9" fill="#e6f3ef"/>
 
-      
+       
         <path data-body="bot" d="M52,302 L52,214 Q52,202 170,202 Q288,202 288,214 L288,302 Q288,316 170,316 Q52,316 52,302 Z" fill="url(#botGrad)"/>
-        
+         
         <ellipse cx="120" cy="250" rx="18" ry="40" fill="#fff" opacity=".18"/>
 
-        
+         
         <path id="botIcing" d="M52,214 Q52,200 170,200 Q288,200 288,214
           L288,232 Q278,260 264,236 Q250,216 234,246 Q220,268 204,238 Q188,218 172,248
           Q158,270 142,240 Q126,218 110,248 Q96,268 80,238 Q66,218 52,236 Z" fill="#f5e6c8"/>
         <path d="M62,212 Q170,198 278,212 Q170,206 62,212 Z" fill="#fff" opacity=".4"/>
 
-       
+        
         <path data-body="top" d="M96,202 L96,134 Q96,122 170,122 Q244,122 244,134 L244,202 Q244,212 170,212 Q96,212 96,202 Z" fill="url(#topGrad)"/>
         <ellipse cx="130" cy="170" rx="13" ry="28" fill="#fff" opacity=".2"/>
 
-       
+        
         <path id="topIcing" d="M96,134 Q96,120 170,120 Q244,120 244,134
           L244,150 Q236,172 224,150 Q212,132 198,158 Q184,178 170,150 Q156,132 142,158 Q130,178 116,150 Q104,132 96,154 Z" fill="#f5e6c8"/>
         <path d="M106,128 Q170,116 234,128 Q170,124 106,128 Z" fill="#fff" opacity=".4"/>
 
-      
+       
         <g id="defaultCandles">
           <g class="dcandle" transform="translate(140,78)">
             <rect x="-3.5" y="0" width="7" height="42" rx="2" fill="url(#stripe)"/>
@@ -284,8 +284,8 @@
   <div class="hint" id="hint">Tap the cake to customize it. <span class="dot"></span> Add your favorite toppings and candles!✨</div>
 
   <section class="greeting" id="greeting">
-    <h3>Take care and enjoy your special day.</h3>
-    <p>I love you always.</p>
+    <h3>make a wish — tap each candle to blow it out</h3>
+    <p>Take care and enjoy your special day.</p>
     <button class="btn ghost" id="musicBtn">▶  Play Birthday Song</button>
   </section>
 
@@ -342,7 +342,7 @@ buildSwatches('icingSwatches',
   'cream',
   (k)=>{
     const v = ICING_FLAVORS[k];
-    
+     
     const wrap = document.getElementById('pourWrap');
     wrap.innerHTML = '';
     wrap.style.opacity='1';
